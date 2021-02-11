@@ -1,0 +1,1 @@
+export type ToggleViewEdit = (index: number) => void
