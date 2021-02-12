@@ -14,10 +14,12 @@ const NewToDo: FC = observer(() => {
     }
 
     return(
-        <NewToDoStyled>
-            <Input value={task} onChange={e => setTask(e.target.value)} placeholder="Nueva tarea"/>
-            <Button onClick={saveTodo}>Agregar</Button>
-        </NewToDoStyled>
+        <>
+            <NewToDoStyled>
+                <Input value={task} onChange={e => setTask(e.target.value)} placeholder="Nueva tarea"/>
+                <Button onClick={saveTodo}>Agregar</Button>
+            </NewToDoStyled>
+        </>
     )
 })
 

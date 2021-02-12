@@ -1,64 +1,37 @@
 import { observer } from 'mobx-react-lite'
-import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import useStore from '../../../../hooks/useStore'
 import metrics from '../../../../styles/metrics'
 import Todo from './Todo/Todo'
-import { ToggleViewEdit, ViewEdit } from './types'
 
 const TodoList = observer(() => {
     const { todos } = useStore()
-    const [viewsEdit, setViewsEdit] = useState<ViewEdit[]>([])
-
-    useEffect(() => {
-        console.log(todos.list)
-
-        setViewsEdit(currentArray => {
-            let newArray: ViewEdit[] = []
-
-            for(let i = 0; i < todos.list.length; i++){
-                let item = currentArray[i] || {id: todos.list[i].id, active: false}
-                newArray.push(item)
-            }
-
-            return newArray
-        })
-
-    },[todos])
-
-    const toggleViewEdit: ToggleViewEdit = (id) => {
-        setViewsEdit(views => views.map(view => {
-            if(view.id === id)
-                return {...view, active: !view.active}
-            return {...view, active: false}
-        }))
-    }
+    const list = todos.viewDone ? todos.list : todos.undoneTodos
 
     return(
-        <TodoListStyled>
+        <TodoListStyled isEmpty={list.length === 0}>
             {
-                todos.list.map(todo => (
-                    <Todo
-                        key={todo.id}
-                        todo={todo}
-                        viewsEdit={viewsEdit}
-                        toggleViewEdit={toggleViewEdit}
-                    />
+                list.map(todo => (
+                    <Todo key={todo.id} todo={todo}/>
                 ))
             }
         </TodoListStyled>
     )
 })
 
-const TodoListStyled = styled.main`
+const TodoListStyled = styled.main<{isEmpty: boolean}>`
     display: flex;
     flex-flow: column nowrap;
+    opacity: ${({isEmpty}) => isEmpty ? "0" : "1"};
+    pointer-events: ${({isEmpty}) => isEmpty ? "none" : "initial"};
+    transition: opacity .25s;
     margin: 24px 0 0 0;
     padding: 16px 24px;
     width: 100%;
     max-width: 500px;
     box-shadow: ${metrics.effect.boxShadow};
     border-radius: ${metrics.border.default.radius};
+
 `
 
 export default TodoList

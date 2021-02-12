@@ -4,33 +4,16 @@ import metrics from '../../../../../styles/metrics'
 import colors from '../../../../../styles/colors'
 import Input from '../../../../elements/Input/Input'
 import Button from '../../../../elements/Button/Button'
-import { useState } from 'react'
 import { Props } from './types'
 import useStore from '../../../../../hooks/useStore'
 import { observer } from 'mobx-react-lite'
+import useTodo from './useTodo'
 
 
-const Todo: FC<Props> = ({todo, viewsEdit, toggleViewEdit}) => {
+const Todo: FC<Props> = observer(({todo}) => {
     const store = useStore()
-    const [taskEdited, setTaskEdited] = useState(todo.task)
-    const editing = viewsEdit.find(view => view.id === todo.id)?.active || false
-
-    const toggleDone = (e: React.ChangeEvent<HTMLInputElement>) => {
-        store.todos.editTodo(todo.id, {done: e.target.checked})
-    }
-
-    const updateContentEdit = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTaskEdited(e.target.value)
-    }
-
-    const handleToggleViewEdit = () => {
-        toggleViewEdit(todo.id)
-    }
-
-    const saveEdit = () => {
-        store.todos.editTodo(todo.id, {task: taskEdited})
-        handleToggleViewEdit()
-    }
+    const {toggleDone, taskEdited, handleSetTaskEdited, handleToggleViewEdit, saveEdit} = useTodo({todo})
+    const isEditing = (store.todos.activeViewEdit?.id || '') === todo.id
 
     return(
         <TodoStyled done={todo.done}>
@@ -38,13 +21,13 @@ const Todo: FC<Props> = ({todo, viewsEdit, toggleViewEdit}) => {
                 <input type="checkbox" defaultChecked={todo.done} onChange={toggleDone}/>
                 <button onClick={handleToggleViewEdit}>{todo.task}</button>
             </fieldset>
-            <EditTodo show={editing}>
-                <Input value={taskEdited} onChange={updateContentEdit} type="text"/>
+            <EditTodo show={isEditing}>
+                <Input value={taskEdited} onChange={handleSetTaskEdited} type="text"/>
                 <Button onClick={saveEdit}>Guardar</Button>
             </EditTodo>
         </TodoStyled>
     )
-}
+})
 
 const EditTodo = styled.div<{show: boolean}>`
     width: 100%;

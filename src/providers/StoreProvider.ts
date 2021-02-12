@@ -1,7 +1,7 @@
 import { createContext } from 'react'
-import { TypeOfInstance as TypeOfStore } from '../models/Store'
+import { TypeOfStore } from '../models/Store'
 
 export const StoreContext = createContext<TypeOfStore>({} as TypeOfStore)
 
-const StoreProvider = StoreContext.Provider
-export default StoreProvider
+const Provider = StoreContext.Provider
+export default Provider

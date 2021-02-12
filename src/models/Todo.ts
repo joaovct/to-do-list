@@ -1,4 +1,4 @@
-import { types, Instance } from 'mobx-state-tree'
+import { Instance, types } from 'mobx-state-tree'
 
 const Todo = types.model({
     id: types.identifier,
@@ -6,6 +6,6 @@ const Todo = types.model({
     done: types.boolean
 })
 
-export interface TypeOfInstance extends Instance<typeof Todo>{}
+export interface TypeOfTodo extends Instance<typeof Todo>{}
 
 export default Todo

@@ -1,4 +1,4 @@
-import { types, Instance } from 'mobx-state-tree'
+import { types, Instance } from "mobx-state-tree";
 import Todos from './Todos'
 
 const Store = types.model({
@@ -6,11 +6,9 @@ const Store = types.model({
 })
 
 export const initialState = Store.create({
-    todos: {
-        list: []
-    }
+    todos: {}
 })
 
-export interface TypeOfInstance extends Instance<typeof Store>{}
+export interface TypeOfStore extends Instance<typeof Store>{}
 
 export default Store

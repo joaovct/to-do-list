@@ -2,7 +2,6 @@ import {createGlobalStyle} from 'styled-components'
 
 export default createGlobalStyle`
     html, body, #root{
-        height: 100%;
         min-height: 100vh;
         min-height: -webkit-fill-available;
         width: 100%;
