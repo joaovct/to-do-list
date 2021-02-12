@@ -1,12 +1,8 @@
-import { ToggleViewEdit } from "../types";
+import { TypeOfInstance as TypeOfTodo } from '../../../../../models/Todo'
+import { ToggleViewEdit, ViewEdit } from '../types';
 
 export interface Props{
-    todo: {
-        id: string
-        content: string
-        done: boolean
-    }
+    todo: TypeOfTodo
+    viewsEdit: ViewEdit[]
     toggleViewEdit: ToggleViewEdit
-    viewsEdit: boolean[]
-    index: number
 }

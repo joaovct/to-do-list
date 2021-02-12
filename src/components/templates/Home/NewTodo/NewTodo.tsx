@@ -1,15 +1,25 @@
 import styled from 'styled-components'
 import Input from '../../../elements/Input/Input'
 import Button from '../../../elements/Button/Button'
+import { FC, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import useStore from '../../../../hooks/useStore'
 
-function NewToDo(){
+const NewToDo: FC = observer(() => {
+    const store = useStore()
+    const [task, setTask] = useState('')
+
+    const saveTodo = () => {
+        store.todos.addTodo(task)
+    }
+
     return(
         <NewToDoStyled>
-            <Input placeholder="Nueva tarea"/>
-            <Button>Agregar</Button>
+            <Input value={task} onChange={e => setTask(e.target.value)} placeholder="Nueva tarea"/>
+            <Button onClick={saveTodo}>Agregar</Button>
         </NewToDoStyled>
     )
-}
+})
 
 const NewToDoStyled = styled.div`
     display: flex;

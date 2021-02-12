@@ -1,9 +1,12 @@
-import React from 'react';
 import Home from './pages/Home'
+import StoreProvider from './providers/StoreProvider'
+import { initialState as storeInitialState } from './models/Store'
 
 function App() {
   return (
-    <Home/>
+    <StoreProvider value={storeInitialState}>
+      <Home/>
+    </StoreProvider>
   )
 }
 

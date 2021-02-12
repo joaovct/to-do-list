@@ -6,37 +6,40 @@ import Input from '../../../../elements/Input/Input'
 import Button from '../../../../elements/Button/Button'
 import { useState } from 'react'
 import { Props } from './types'
+import useStore from '../../../../../hooks/useStore'
+import { observer } from 'mobx-react-lite'
 
-const Todo: FC<Props> = ({todo, toggleViewEdit, viewsEdit, index}) => {
-    const [done, setDone] = useState(todo.done)
-    const [content, setContent] = useState(todo.content)
-    const [contentEdit, setContentEdit] = useState(todo.content)
+
+const Todo: FC<Props> = ({todo, viewsEdit, toggleViewEdit}) => {
+    const store = useStore()
+    const [taskEdited, setTaskEdited] = useState(todo.task)
+    const editing = viewsEdit.find(view => view.id === todo.id)?.active || false
 
     const toggleDone = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDone(e.target.checked)
+        store.todos.editTodo(todo.id, {done: e.target.checked})
     }
 
     const updateContentEdit = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setContentEdit(e.target.value)
+        setTaskEdited(e.target.value)
     }
 
     const handleToggleViewEdit = () => {
-        toggleViewEdit(index)
+        toggleViewEdit(todo.id)
     }
 
     const saveEdit = () => {
-        setContent(contentEdit)
+        store.todos.editTodo(todo.id, {task: taskEdited})
         handleToggleViewEdit()
     }
 
     return(
-        <TodoStyled done={done}>
+        <TodoStyled done={todo.done}>
             <fieldset>
-                <input type="checkbox" defaultChecked={done} onChange={toggleDone}/>
-                <button onClick={handleToggleViewEdit}>{content}</button>
+                <input type="checkbox" defaultChecked={todo.done} onChange={toggleDone}/>
+                <button onClick={handleToggleViewEdit}>{todo.task}</button>
             </fieldset>
-            <EditTodo show={viewsEdit[index]}>
-                <Input value={contentEdit} onChange={updateContentEdit} type="text"/>
+            <EditTodo show={editing}>
+                <Input value={taskEdited} onChange={updateContentEdit} type="text"/>
                 <Button onClick={saveEdit}>Guardar</Button>
             </EditTodo>
         </TodoStyled>

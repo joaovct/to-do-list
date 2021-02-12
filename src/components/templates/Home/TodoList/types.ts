@@ -1,1 +1,6 @@
-export type ToggleViewEdit = (index: number) => void
+export type ToggleViewEdit = (id: string) => void
+
+export interface ViewEdit {
+    id: string
+    active: boolean
+}

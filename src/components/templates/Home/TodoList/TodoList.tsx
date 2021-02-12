@@ -1,39 +1,54 @@
-import { useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import useStore from '../../../../hooks/useStore'
 import metrics from '../../../../styles/metrics'
 import Todo from './Todo/Todo'
-import { ToggleViewEdit } from './types'
+import { ToggleViewEdit, ViewEdit } from './types'
 
-function TodoList(){
-    const [viewsEdit, setViewsEdit] = useState([false, false, false])
+const TodoList = observer(() => {
+    const { todos } = useStore()
+    const [viewsEdit, setViewsEdit] = useState<ViewEdit[]>([])
 
-    const toggleViewEdit: ToggleViewEdit = (i) => {
-        setViewsEdit(views => views.map((view, j) => i === j ? !view : false))
+    useEffect(() => {
+        console.log(todos.list)
+
+        setViewsEdit(currentArray => {
+            let newArray: ViewEdit[] = []
+
+            for(let i = 0; i < todos.list.length; i++){
+                let item = currentArray[i] || {id: todos.list[i].id, active: false}
+                newArray.push(item)
+            }
+
+            return newArray
+        })
+
+    },[todos])
+
+    const toggleViewEdit: ToggleViewEdit = (id) => {
+        setViewsEdit(views => views.map(view => {
+            if(view.id === id)
+                return {...view, active: !view.active}
+            return {...view, active: false}
+        }))
     }
 
     return(
         <TodoListStyled>
-            <Todo
-                todo={{id: "1", content: "Aprender Typescript", done: true}}
-                viewsEdit={viewsEdit}
-                toggleViewEdit={toggleViewEdit}
-                index={0}
-            />
-            <Todo
-                todo={{id: "2", content: "Hacer test", done: false}}
-                viewsEdit={viewsEdit}
-                toggleViewEdit={toggleViewEdit}
-                index={1}
-            />
-            <Todo
-                todo={{id: "3", content: "Enviar test", done: false}}
-                viewsEdit={viewsEdit}
-                toggleViewEdit={toggleViewEdit}
-                index={2}
-            />
+            {
+                todos.list.map(todo => (
+                    <Todo
+                        key={todo.id}
+                        todo={todo}
+                        viewsEdit={viewsEdit}
+                        toggleViewEdit={toggleViewEdit}
+                    />
+                ))
+            }
         </TodoListStyled>
     )
-}
+})
 
 const TodoListStyled = styled.main`
     display: flex;
