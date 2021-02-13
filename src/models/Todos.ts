@@ -19,20 +19,22 @@ const Todos = types
     }))
     .actions(self => ({
         addTodo(task: string){
-            self.list.push({
-                id: nanoid(),
-                task: task,
-                done: false
-            })
-            
-            self.viewsEdit = cast(self.list.map((todo) => {
-                const activeView = self.activeViewEdit
+            if(task.trim()){
+                self.list.push({
+                    id: nanoid(),
+                    task: task,
+                    done: false
+                })
+                
+                self.viewsEdit = cast(self.list.map((todo) => {
+                    const activeView = self.activeViewEdit
 
-                if(activeView && todo.id === activeView.id){
-                    return {id: todo.id, active: true}
-                }
-                return {id: todo.id, active: false}
-            }))
+                    if(activeView && todo.id === activeView.id){
+                        return {id: todo.id, active: true}
+                    }
+                    return {id: todo.id, active: false}
+                }))
+            }
         },
         editTodo(id: string, {task, done}: {task?: string , done?: boolean}){
             self.list = cast(self.list.map(todo => {
