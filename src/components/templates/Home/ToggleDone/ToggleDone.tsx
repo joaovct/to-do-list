@@ -7,7 +7,7 @@ const ToggleDone = observer(() => {
     const { todos } = useStore()
 
     return(
-        <Button onClick={todos.toggleViewDone}>
+        <Button aria-label="cambiar completadas" onClick={todos.toggleViewDone}>
             {
                 todos.viewDone ? "Mostrar completadas" : "Ocultar completadas"
             }

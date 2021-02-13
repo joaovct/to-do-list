@@ -9,7 +9,6 @@ import useStore from '../../../../../hooks/useStore'
 import { observer } from 'mobx-react-lite'
 import useTodo from './useTodo'
 
-
 const Todo: FC<Props> = observer(({todo}) => {
     const store = useStore()
     const {toggleDone, taskEdited, handleSetTaskEdited, handleToggleViewEdit, saveEdit} = useTodo({todo})
@@ -18,12 +17,17 @@ const Todo: FC<Props> = observer(({todo}) => {
     return(
         <TodoStyled done={todo.done}>
             <fieldset>
-                <input type="checkbox" defaultChecked={todo.done} onChange={toggleDone}/>
+                <input aria-label="tarea checkbox" type="checkbox" defaultChecked={todo.done} onChange={toggleDone}/>
                 <button onClick={handleToggleViewEdit}>{todo.task}</button>
             </fieldset>
             <EditTodo show={isEditing}>
-                <Input value={taskEdited} onChange={handleSetTaskEdited} type="text"/>
-                <Button onClick={saveEdit}>Guardar</Button>
+                <Input
+                    value={taskEdited}
+                    onChange={handleSetTaskEdited}
+                    type="text"
+                    aria-label="editar tarea"
+                />
+                <Button aria-label="guardar" onClick={saveEdit}>Guardar</Button>
             </EditTodo>
         </TodoStyled>
     )
