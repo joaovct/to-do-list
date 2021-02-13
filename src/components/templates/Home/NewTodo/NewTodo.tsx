@@ -31,6 +31,34 @@ const NewToDoStyled = styled.div`
     ${Input}{
         margin: 0 8px 0 0;
     }
+
+    @media(max-width: 500px){
+        width: 100%;
+
+        ${Input}, ${Button}{
+            min-width: inherit;
+            width: 100%;
+        }
+        ${Input}{
+            flex: 2;
+        }
+        ${Button}{
+            flex: 1;
+        }
+    }
+
+    @media(max-width: 400px){
+        flex-flow: column nowrap;
+
+        ${Input},${Button}{
+            flex: inherit;
+            margin: 0;
+        }
+
+        ${Button}{
+            margin: 8px 0 0 0;
+        }
+    }
 `
 
 export default NewToDo

@@ -42,6 +42,18 @@ const EditTodo = styled.div<{show: boolean}>`
     ${Button}{
         flex: 1;
     }
+
+    @media(max-width: 400px){
+        flex-flow: column nowrap;
+
+        ${Input},${Button}{
+            flex: inherit;
+            width: 100%;
+        }
+        ${Button}{
+            margin: 8px 0 0 0;
+        }
+    }
 `
 
 const TodoStyled = styled.div<{done: boolean}>`

@@ -32,6 +32,9 @@ const TodoListStyled = styled.main<{isEmpty: boolean}>`
     box-shadow: ${metrics.effect.boxShadow};
     border-radius: ${metrics.border.default.radius};
 
+    @media(max-width: 400px){
+        padding: 16px;
+    }
 `
 
 export default TodoList
